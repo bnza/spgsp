@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace PBald\SMySp\DBAL\Types;
+namespace PBald\SPgSp\DBAL\Types;
 
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;

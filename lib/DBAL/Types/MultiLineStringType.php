@@ -17,9 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PBald\SMySp\DBAL\Types;
+namespace PBald\SPgSp\DBAL\Types;
 
-use PBald\SMySp\DBAL\Types\AbstractGeometryType;
+use PBald\SPgSp\DBAL\Types\AbstractGeometryType;
 
 /**
  * Description of MultiLineStringType

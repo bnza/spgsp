@@ -6,9 +6,9 @@
  * and open the template in the editor.
  */
 
-namespace PBald\SMySp\ORM\Query\AST\Functions;
+namespace PBald\SPgSp\ORM\Query\AST\Functions;
 
-use PBald\SMySp\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
+use PBald\SPgSp\ORM\Query\AST\Functions\AbstractSpatialDQLFunction;
 
 /**
  * ST_GeomFromWKB DQL function

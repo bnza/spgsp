@@ -17,10 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PBald\SMySp\Tests\DBAL\Types;
+namespace PBald\SPgSp\Tests\DBAL\Types;
 
 use GeoPHP\GeoPhp;
-use PBald\SMySp\Tests\OrmTestCase;
+use PBald\SPgSp\Tests\OrmTestCase;
 use Doctrine\DBAL\Types\Type as DBALType;
 
 /**

@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-namespace PBald\SMySp\ORM\Query\AST\Functions;
+namespace PBald\SPgSp\ORM\Query\AST\Functions;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\AST\Node;

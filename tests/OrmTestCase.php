@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PBald\SMySp\Tests;
+namespace PBald\SPgSp\Tests;
 
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\ORM\Configuration;
@@ -129,7 +129,7 @@ class OrmTestCase extends \PHPUnit_Framework_TestCase {
      */
     protected function setUpFunctions() {
         $configuration = $this->getEntityManager()->getConfiguration();
-        $configuration->addCustomStringFunction('GeomFromText', 'PBald\SMySp\ORM\Query\AST\Functions\GeomFromText');
+        $configuration->addCustomStringFunction('GeomFromText', 'PBald\SPgSp\ORM\Query\AST\Functions\GeomFromText');
     }
 
     /**

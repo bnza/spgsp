@@ -17,12 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PBald\SMySp\Tests\DBAL\Types;
+namespace PBald\SPgSp\Tests\DBAL\Types;
 
 use GeoPHP\GeoPhp;
-use PBald\SMySp\DBAL\Types\GeometryCollectionType;
-use PBald\SMySp\Tests\DBAL\Types\AbstractGeometryTypeTest;
-use PBald\SMySp\Tests\Fixtures\GeometryCollectionEntity;
+use PBald\SPgSp\DBAL\Types\GeometryCollectionType;
+use PBald\SPgSp\Tests\DBAL\Types\AbstractGeometryTypeTest;
+use PBald\SPgSp\Tests\Fixtures\GeometryCollectionEntity;
 
 /**
  * Description of MultiPointTest

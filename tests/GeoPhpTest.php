@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PBald\SMySp\Tests;
+namespace PBald\SPgSp\Tests;
 
 use GeoPHP\GeoPhp;
 

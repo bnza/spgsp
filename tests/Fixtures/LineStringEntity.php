@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-namespace PBald\SMySp\Tests\Fixtures;
+namespace PBald\SPgSp\Tests\Fixtures;
 
 use GeoPHP\Geometry\LineString;
 

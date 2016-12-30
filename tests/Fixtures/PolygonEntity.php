@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PBald\SMySp\Tests\Fixtures;
+namespace PBald\SPgSp\Tests\Fixtures;
 
 use GeoPHP\Geometry\Polygon;
 

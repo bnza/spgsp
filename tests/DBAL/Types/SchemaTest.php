@@ -25,7 +25,7 @@
 
 namespace PBald\Tests\DBAL\Types;
 
-use PBald\SMySp\Tests\OrmTestCase;
+use PBald\SPgSp\Tests\OrmTestCase;
 use Doctrine\ORM\EntityManager;
 use Doctrine\DBAL\Connection;
 

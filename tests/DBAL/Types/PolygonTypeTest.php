@@ -17,11 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PBald\SMySp\Tests\DBAL\Types;
+namespace PBald\SPgSp\Tests\DBAL\Types;
 
-use PBald\SMySp\DBAL\Types\PolygonType;
-use PBald\SMySp\Tests\DBAL\Types\AbstractGeometryTypeTest;
-use PBald\SMySp\Tests\Fixtures\PolygonEntity;
+use PBald\SPgSp\DBAL\Types\PolygonType;
+use PBald\SPgSp\Tests\DBAL\Types\AbstractGeometryTypeTest;
+use PBald\SPgSp\Tests\Fixtures\PolygonEntity;
 
 /**
  * Description of MultiPointTest

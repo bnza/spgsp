@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.8/phpunit.xsd"
+    backupGlobals="false"
+    backupStaticAttributes="true"
+    colors="true"
+    bootstrap="../../autoload.php"
+>
+    <testsuites>
+        <testsuite name="SMySp">
+            <directory suffix="Test.php">./tests</directory>
+        </testsuite>
+    </testsuites>
+    
+    <php>
+        <var name="db_type" value="pdo_mysql"/>
+        <var name="db_host" value="localhost" />
+        <var name="db_username" value="username" />
+        <var name="db_password" value="password" />
+        <var name="db_name" value="smysp_spatial_tests" />
+        <var name="db_port" value="3306" />
+        <var name="opt_mark_sql" value="true" />        <!-- Execute dummy SELECT statement before each test to mark DB query log -->
+        <var name="opt_use_debug_stack" value="true" /> <!-- Enable SQLLoggerStack and query logging exception in tests -->
+    </php>
+
+    <filter>
+        <whitelist>
+            <directory>./</directory>
+            <exclude>
+                <directory>./tests</directory>
+                <directory>./vendor</directory>
+                <directory>./examples</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>

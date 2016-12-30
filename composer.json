@@ -1,0 +1,25 @@
+{
+    "name": "pbald/doctrine2-smysp",
+    "license": "GPL-3",
+    "type": "library",
+    "description": "Doctrine2 simple support for spatial types and functions",
+    "keywords": ["parser", "lexer", "string", "text", "geometry", "geography", "spatial", "geo", "coordinate"],
+    "require": {
+        "php":            ">=5.3.3",
+        "ext-SPL":        "*",
+	"pbald/geophp-bundle":">=1.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit":               ">=4.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "PBald\\SMySp\\": "lib/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PBald\\SMySp\\Tests\\": "tests/"
+        }
+    }
+}

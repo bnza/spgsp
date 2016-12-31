@@ -38,20 +38,18 @@ class MultiLineStringTypeTest extends AbstractGeometryTypeTest {
         $this->doctrineType = $this->dbtype = 'multilinestring';
         $this->geometryTypeClassName = MultiLineStringType::class;
         $this->fixtureEntityClassName = MultiLineStringEntity::class;
-    }
-
-    protected function getTestEntities() {
-        $entities = array();
-        $wkts = array(
-            'MULTILINESTRING ((3 4, 10 50, 20 25), (-5 -8, -10 -8, -15 -4))',
+        $this->geojsons = array(
+            <<<EOF
+            { 
+                "type": "MultiLineString",
+                "crs":{"type":"name","properties":{"name":"EPSG:4326"}},
+                "coordinates": [
+                    [ [100.0, 0.0], [101.0, 1.0] ],
+                    [ [102.0, 2.0], [103.0, 3.0] ]
+                ]
+            }
+EOF
         );
-        foreach ($wkts as $wkt) {
-            $geom = GeoPhp::load($wkt, 'wkt');
-            $entity = new MultiLineStringEntity();
-            $entity->setGeom($geom);
-            array_push($entities, $entity);
-        }
-        return $entities;
     }
 
     public function testGeomsPersistence() {

@@ -38,8 +38,18 @@ class MultiPolygonTypeTest extends AbstractGeometryTypeTest {
         $this->doctrineType = $this->dbtype = 'multipolygon';
         $this->geometryTypeClassName = MultiPolygonType::class;
         $this->fixtureEntityClassName = MultiPolygonEntity::class;
-        $this->wkts = array(
-            'MULTIPOLYGON (((1 1, 5 1, 5 5, 1 5, 1 1), (2 2, 3 2, 3 3, 2 3, 2 2)), ((3 3, 6 2, 6 4, 3 3)))',
+        $this->geojsons = array(
+            <<<EOF
+            { 
+                "type": "MultiPolygon",
+                "crs":{"type":"name","properties":{"name":"EPSG:4326"}},
+                "coordinates": [
+                    [[[102.0, 2.0], [103.0, 2.0], [103.0, 3.0], [102.0, 3.0], [102.0, 2.0]]],
+                    [[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]],
+                    [[100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2]]]
+                ]
+            }
+EOF
         );
     }
 

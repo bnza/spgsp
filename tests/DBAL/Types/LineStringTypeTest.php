@@ -19,7 +19,6 @@
 
 namespace PBald\SPgSp\Tests\DBAL\Types;
 
-use GeoPHP\GeoPhp;
 use PBald\SPgSp\DBAL\Types\LineStringType;
 use PBald\SPgSp\Tests\DBAL\Types\AbstractGeometryTypeTest;
 use PBald\SPgSp\Tests\Fixtures\LineStringEntity;
@@ -38,8 +37,14 @@ class LineStringTypeTest extends AbstractGeometryTypeTest {
         $this->doctrineType = $this->dbtype = 'linestring';
         $this->geometryTypeClassName = LineStringType::class;
         $this->fixtureEntityClassName = LineStringEntity::class;
-        $this->wkts = array(
-            'LINESTRING (3 4, 10 50, 20 25)',
+        $this->geojsons = array(
+            <<<EOF
+            { 
+                "type": "LineString",
+                "crs":{"type":"name","properties":{"name":"EPSG:4326"}},
+                "coordinates": [ [100.0, 0.0], [101.0, 1.0] ]
+            }
+EOF
         );
     }
 

@@ -57,13 +57,13 @@ class MultiLineStringEntity {
     }
 
     /**
-     * Set point
+     * Set geom
      *
-     * @param MultiPoint $geom
+     * @param string $geom
      *
      * @return self
      */
-    public function setGeom(MultiLineString $geom)
+    public function setGeom(string $geom)
     {
         $this->geom = $geom;
 

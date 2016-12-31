@@ -57,13 +57,13 @@ class PolygonEntity {
     }
 
     /**
-     * Set point
+     * Set geom
      *
-     * @param MultiPoint $geom
+     * @param string $geom
      *
      * @return self
      */
-    public function setGeom(Polygon $geom)
+    public function setGeom(string $geom)
     {
         $this->geom = $geom;
 

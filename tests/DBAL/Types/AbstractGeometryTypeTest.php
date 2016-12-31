@@ -19,7 +19,6 @@
 
 namespace PBald\SPgSp\Tests\DBAL\Types;
 
-use GeoPHP\GeoPhp;
 use PBald\SPgSp\Tests\OrmTestCase;
 use Doctrine\DBAL\Types\Type as DBALType;
 
@@ -63,15 +62,15 @@ abstract class AbstractGeometryTypeTest extends OrmTestCase {
     protected $fixtureEntityClassName;
 
     /**
-     * WKT string array
+     * geoJSON string array
      * 
      * @var string[]
      */
-    protected $wkts;
+    protected $geojsons;
     
     /**
      * Function set up set up $dbtype, $doctrineType, $geometryTypeClassName,
-     * $fixtureEntityClassName and $wkts.
+     * $fixtureEntityClassName and $geojsons.
      */
     abstract protected function setUpSpecificGeometry();
 
@@ -85,6 +84,7 @@ abstract class AbstractGeometryTypeTest extends OrmTestCase {
 
         $classes[] = $this->getEntityManager()->getClassMetadata($this->fixtureEntityClassName);
         $this->getSchemaTool()->createSchema($classes);
+        var_dump($this->getSchemaTool()->getCreateSchemaSql($classes));
 
         $this->getEntityManager()
                 ->getConnection()
@@ -97,7 +97,7 @@ abstract class AbstractGeometryTypeTest extends OrmTestCase {
      * @param type $entity
      */
     public function _testGeomPersistence($entity) {
-
+        
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
 
@@ -109,21 +109,22 @@ abstract class AbstractGeometryTypeTest extends OrmTestCase {
                 ->getRepository($this->fixtureEntityClassName)
                 ->find($id);
 
-        $this->assertEquals($entity, $queryEntity);
+        $this->assertJsonStringEqualsJsonString(
+                json_encode($entity), 
+                json_encode($queryEntity));
     }
     
     /**
      * Function return an array of geometry *Entity instances with correctly 
-     * filled geom property using the $this->wkts array
+     * filled geom property using the $this->geojsons array
      *  
      * @return array
      */
     protected function getTestEntities() {
         $entities = array();
-        foreach ($this->wkts as $wkt) {
-            $geom = GeoPhp::load($wkt, 'wkt');
+        foreach ($this->geojsons as $geojson) {
             $entity = new $this->fixtureEntityClassName();
-            $entity->setGeom($geom);
+            $entity->setGeom($geojson);
             array_push($entities, $entity);
         }
         return $entities;

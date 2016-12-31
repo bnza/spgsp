@@ -19,7 +19,6 @@
 
 namespace PBald\SPgSp\Tests\DBAL\Types;
 
-use GeoPHP\GeoPhp;
 use PBald\SPgSp\DBAL\Types\PointType;
 use PBald\SPgSp\Tests\DBAL\Types\AbstractGeometryTypeTest;
 use PBald\SPgSp\Tests\Fixtures\PointEntity;
@@ -38,8 +37,14 @@ class PointTypeTest extends AbstractGeometryTypeTest {
         $this->doctrineType = $this->dbtype = 'point';
         $this->geometryTypeClassName = PointType::class;
         $this->fixtureEntityClassName = PointEntity::class;
-        $this->wkts = array(
-            'POINT (1 3)',
+        $this->geojsons = array(
+            <<<EOF
+            { 
+                "type": "Point",
+                "crs":{"type":"name","properties":{"name":"EPSG:4326"}},
+                "coordinates": [100.0, 0.0] 
+            }
+EOF
         );
     }
 

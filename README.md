@@ -11,7 +11,7 @@ Repository currently marked as dev. Set up your ```composer.json``` consequently
  "repositories": [
     {
                 "type": "vcs",
-                "url": "https://github.com/pbald/doctrine2-spgsp.git"
+                "url": "https://github.com/pbald/spgsp.git"
     }
 ],
 ```

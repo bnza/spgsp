@@ -17,38 +17,64 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  * @author Pietro Baldassarri <pietro.baldassarri@gmail.com>
  */
 abstract class AbstractGeometryType extends Type {
-
+    
+    /**
+     * {@inheritDoc}
+     */
     public function canRequireSQLConversion() {
         return true;
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
     public function convertToDatabaseValue($value, AbstractPlatform $platform) {
-        //return $value ? json_encode($value) : $value;
         return $value;
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
     public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform) {
-        //return sprintf('ST_GeomFromGeoJSON(%s)', $sqlExpr);
-        return sprintf('ST_SetSRID(ST_GeomFromGeoJSON(%s), 4326)', $sqlExpr);
+        return sprintf('ST_GeomFromGeoJSON(%s)', $sqlExpr);
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
     public function convertToPHPValue($value, AbstractPlatform $platform) {
-        //return $value ? json_decode($value) : $value;
         return $value;
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
     public function convertToPHPValueSQL($sqlExpr, $platform) {
-        return sprintf('ST_AsGeoJSON(%s)', $sqlExpr);
+        return sprintf('ST_AsGeoJSON(%s, 7, 2)', $sqlExpr);
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
     public function getName() {
         return strtolower(substr(get_called_class(), strrpos(get_called_class(), "\\") + 1, -4));
     }
-
+    
+    /**
+     * Adds a ORM/Column definition custom srid option
+     * e.g Column(type="point", options={"srid":4326})
+     * 
+     * @param array $fieldDeclaration
+     * @param AbstractPlatform $platform
+     * @return string
+     */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform) {
-//        $type = strtoupper(substr(get_called_class(), strrpos(get_called_class(), "\\") + 1, -4));
-//        return sprintf('GEOMETRY(%s, 4326)',$type);
-        return strtoupper(substr(get_called_class(), strrpos(get_called_class(), "\\") + 1, -4));
+        $geomDeclArr = [$this->getName()];
+        if (isset($fieldDeclaration["srid"])) {
+            $geomDeclArr[] = $fieldDeclaration["srid"];
+        }
+        $geomDecl = implode(',', $geomDeclArr);
+        return strtoupper("geometry($geomDecl)");
     }
 
 }

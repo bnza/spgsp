@@ -59,11 +59,11 @@ class MultiPointEntity {
     /**
      * Set point
      *
-     * @param MultiPoint $geom
+     * @param string $geom
      *
      * @return self
      */
-    public function setGeom(MultiPoint $geom)
+    public function setGeom(string $geom)
     {
         $this->geom = $geom;
 

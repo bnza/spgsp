@@ -19,7 +19,6 @@
 
 namespace PBald\SPgSp\Tests\DBAL\Types;
 
-use GeoPHP\GeoPhp;
 use PBald\SPgSp\DBAL\Types\MultiPointType;
 use PBald\SPgSp\Tests\DBAL\Types\AbstractGeometryTypeTest;
 use PBald\SPgSp\Tests\Fixtures\MultiPointEntity;
@@ -38,8 +37,14 @@ class MultiPointTypeTest extends AbstractGeometryTypeTest {
         $this->doctrineType = $this->dbtype = 'multipoint';
         $this->geometryTypeClassName = MultiPointType::class;
         $this->fixtureEntityClassName = MultiPointEntity::class;
-        $this->wkts = array(
-            'MULTIPOINT (3.5 5.6, 4.8 10.5)',
+        $this->geojsons = array(
+            <<<EOF
+            { 
+                "type": "MultiPoint",
+                "crs":{"type":"name","properties":{"name":"EPSG:4326"}},
+                "coordinates": [ [100.0, 0.0], [101.0, 1.0] ]
+            }
+EOF
         );
     }
 

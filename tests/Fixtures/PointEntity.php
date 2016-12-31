@@ -23,8 +23,6 @@
 
 namespace PBald\SPgSp\Tests\Fixtures;
 
-use GeoPHP\Geometry\Point;
-
 /**
  * Point entity
  *
@@ -46,9 +44,9 @@ class PointEntity
     protected $id;
 
     /**
-     * @var Point $geom
+     * @var string $geom
      *
-     * @Column(type="point", nullable=true)
+     * @Column(type="point", nullable=true, options={"srid":4326})
      */
     protected $geom;
 
@@ -65,11 +63,11 @@ class PointEntity
     /**
      * Set point
      *
-     * @param Point $geom
+     * @param string $geom
      *
      * @return self
      */
-    public function setGeom(Point $geom)
+    public function setGeom(string $geom)
     {
         $this->geom = $geom;
 
@@ -79,7 +77,7 @@ class PointEntity
     /**
      * Get point
      *
-     * @return Point
+     * @return string
      */
     public function getGeom()
     {

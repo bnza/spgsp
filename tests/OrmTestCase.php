@@ -76,6 +76,7 @@ class OrmTestCase extends \PHPUnit_Framework_TestCase {
             $connectionParams['dbname'] = $GLOBALS['db_name'];
 
             static::$connection = DriverManager::getConnection($connectionParams);
+            static::$connection->exec('CREATE EXTENSION postgis');
         }
         return static::$connection;
     }
@@ -115,8 +116,6 @@ class OrmTestCase extends \PHPUnit_Framework_TestCase {
     }
 
     protected function setUp() {
-//        static::$connection->getConfiguration()
-//                ->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger());
         $this->setUpFunctions();
     }
 
@@ -140,13 +139,6 @@ class OrmTestCase extends \PHPUnit_Framework_TestCase {
     }
 
     public static function tearDownAfterClass() {
-        //print 's';
-        //var_dump(static::$connection->getSchemaManager()->listDatabases());
-//        try {
-//            static::$connection->getSchemaManager()->dropDatabase(static::$dbname);
-//        } catch (\Doctrine\DBAL\Exception\DriverException $e) {
-//            echo $e->getMessage();
-//        }
     }
 
 }

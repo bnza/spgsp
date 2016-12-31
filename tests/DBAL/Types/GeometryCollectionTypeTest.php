@@ -38,9 +38,25 @@ class GeometryCollectionTypeTest extends AbstractGeometryTypeTest {
         $this->doctrineType = $this->dbtype = 'geometrycollection';
         $this->geometryTypeClassName = GeometryCollectionType::class;
         $this->fixtureEntityClassName = GeometryCollectionEntity::class;
-        $this->wkts = $wkts = array(
-            'GEOMETRYCOLLECTION (MULTIPOINT (3.5 5.6, 4.8 10.5), POLYGON ((1 1, 5 1, 5 5, 1 5, 1 1), (2 2, 3 2, 3 3, 2 3, 2 2)))'
-        );
+        $this->geojsons = array(
+            <<<EOF
+            { 
+                "type": "GeometryCollection",
+                "geometries": [
+                    { 
+                        "type": "Point",
+                        "crs":{"type":"name","properties":{"name":"EPSG:4326"}},
+                        "coordinates": [100.0, 0.0]
+                    },
+                    { 
+                        "type": "LineString",
+                        "crs":{"type":"name","properties":{"name":"EPSG:4326"}},
+                        "coordinates": [ [101.0, 0.0], [102.0, 1.0] ]
+                    }
+                ]
+            }
+EOF
+            );
     }
 
     public function testGeomsPersistence() {

@@ -63,13 +63,13 @@ class LineStringEntity
     }
 
     /**
-     * Set point
+     * Set geom
      *
-     * @param Point $point
+     * @param string $geom
      *
      * @return self
      */
-    public function setGeom(LineString $geom)
+    public function setGeom(string $geom)
     {
         $this->geom = $geom;
 

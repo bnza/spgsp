@@ -57,13 +57,13 @@ class GeometryCollectionEntity {
     }
 
     /**
-     * Set point
+     * Set geom
      *
-     * @param GeometryCollection $geom
+     * @param string $geom
      *
      * @return self
      */
-    public function setGeom(GeometryCollection $geom)
+    public function setGeom(string $geom)
     {
         $this->geom = $geom;
 

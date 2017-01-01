@@ -1,4 +1,4 @@
-# doctrine2-smysp
+# spgsp
 Doctrine 2 PostGIS simple support for spatial types and functions
 
 ##Install

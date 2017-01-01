@@ -19,14 +19,16 @@
 
 namespace PBald\SPgSp\Tests\Bridge;
 
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use PBald\SPgSp\Tests\OrmTestCase;
+use PBald\SPgSp\Brigde\PostgisBridge;
+//use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * Description of PostgisBridgeTest
  *
  * @author Pietro Baldassarri <pietro.baldassarri@gmail.com>
  */
-class PostgisBridgeTest extends KernelTestCase {
+class PostgisBridgeTest extends OrmTestCase {
 
     protected $postgis;
 
@@ -34,8 +36,9 @@ class PostgisBridgeTest extends KernelTestCase {
      * {@inheritDoc}
      */
     protected function setUp() {
-        self::bootKernel();
-        $this->postgis = static::$kernel->getContainer()->get('app.postgis');
+        $this->postgis = new PostgisBridge(self::$connection);
+        //self::bootKernel();
+        //$this->postgis = static::$kernel->getContainer()->get('app.postgis');
     }
 
     public function testStSrid() {

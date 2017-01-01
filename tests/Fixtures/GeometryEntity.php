@@ -59,11 +59,11 @@ class GeometryEntity {
     /**
      * Set point
      *
-     * @param Geometry $geom
+     * @param string $geom
      *
      * @return self
      */
-    public function setGeom(Geometry $geom)
+    public function setGeom(string $geom)
     {
         $this->geom = $geom;
 

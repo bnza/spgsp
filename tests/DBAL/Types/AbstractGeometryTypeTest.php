@@ -84,7 +84,7 @@ abstract class AbstractGeometryTypeTest extends OrmTestCase {
 
         $classes[] = $this->getEntityManager()->getClassMetadata($this->fixtureEntityClassName);
         $this->getSchemaTool()->createSchema($classes);
-        var_dump($this->getSchemaTool()->getCreateSchemaSql($classes));
+        //var_dump($this->getSchemaTool()->getCreateSchemaSql($classes));
 
         $this->getEntityManager()
                 ->getConnection()

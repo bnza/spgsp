@@ -49,43 +49,48 @@ class OrmTestCase extends \PHPUnit_Framework_TestCase {
      */
     protected $em;
 
-    /**
-     * @return Connection
-     * @throws UnsupportedPlatformException
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    protected static function getConnection() {
-        if (!isset(static::$connection)) {
+    protected static function getConnectionParams(bool $db_name = false) {
+        static $connectionParams;
+        static $connectionParamsDB;
 
+        if (!isset($connectionParams)) {
             require_once 'connection_params.php';
 
-            $connectionParams = array(
+            $connectionParams = [
                 'driver' => $GLOBALS['db_type'],
                 'user' => $GLOBALS['test_connection_params']['username'],
                 'password' => $GLOBALS['test_connection_params']['password'],
                 'host' => $GLOBALS['db_host'],
                 'port' => $GLOBALS['db_port']
-            );
-
+            ];
 
             static::$dbname = $GLOBALS['db_name'];
-            $tmpConn = DriverManager::getConnection($connectionParams);
-            $tmpConn->getSchemaManager()->dropAndCreateDatabase(static::$dbname);
-            $tmpConn->close();
-
-            $connectionParams['dbname'] = $GLOBALS['db_name'];
-
-            static::$connection = DriverManager::getConnection($connectionParams);
-            static::$connection->exec('CREATE EXTENSION postgis');
+            $connectionParamsDB = $connectionParams;
+            $connectionParamsDB['dbname'] = self::$dbname;
         }
-        return static::$connection;
+        return $db_name ? $connectionParamsDB : $connectionParams;
+    }
+
+    protected static function getConnection() {
+        if (!isset(self::$connection)) {
+            self::$connection = DriverManager::getConnection(self::getConnectionParams(true));
+        }
+        return self::$connection;
     }
 
     /**
-     * @return EntityManager
+     * @return Connection
+     * @throws UnsupportedPlatformException
+     * @throws \Doctrine\DBAL\DBALException
      */
-    protected function getEntityManager() {
+    protected static function createSpatialSchema() {
+        $tmpConn = DriverManager::getConnection(self::getConnectionParams());
+        $tmpConn->getSchemaManager()->dropAndCreateDatabase(self::$dbname);
+        $tmpConn->close();
+        self::getConnection()->exec('CREATE EXTENSION postgis');
+    }
 
+    protected function getConfiguration() {
         $config = new Configuration();
 
         $config->setMetadataCacheImpl(new ArrayCache);
@@ -97,8 +102,16 @@ class OrmTestCase extends \PHPUnit_Framework_TestCase {
                         array(realpath(__DIR__ . '/Fixtures')), true
                 )
         );
+        return $config;
+    }
+
+    /**
+     * @return EntityManager
+     */
+    protected function getEntityManager() {
 
         if (!isset($this->em)) {
+            $config = $this->getConfiguration();
             $this->em = EntityManager::create(static::getConnection(), $config);
         }
         return $this->em;
@@ -111,7 +124,6 @@ class OrmTestCase extends \PHPUnit_Framework_TestCase {
         if (isset($this->schemaTool)) {
             return $this->schemaTool;
         }
-
         return new SchemaTool($this->getEntityManager());
     }
 
@@ -120,7 +132,7 @@ class OrmTestCase extends \PHPUnit_Framework_TestCase {
     }
 
     public static function setUpBeforeClass() {
-        static::$connection = static::getConnection();
+        static::createSpatialSchema();
     }
 
     /**
@@ -135,10 +147,16 @@ class OrmTestCase extends \PHPUnit_Framework_TestCase {
      * Teardown fixtures
      */
     protected function tearDown() {
+        parent::tearDown();
         $this->getEntityManager()->clear();
+        $this->getEntityManager()->close();
+        $this->em = null;
     }
 
     public static function tearDownAfterClass() {
+        parent::tearDownAfterClass();
+        self::$connection->close();
+        self::$connection = null;
     }
 
 }

@@ -19,7 +19,6 @@
 
 namespace PBald\SPgSp\Tests\DBAL\Types;
 
-use GeoPHP\GeoPhp;
 use PBald\SPgSp\DBAL\Types\MultiPolygonType;
 use PBald\SPgSp\Tests\DBAL\Types\AbstractGeometryTypeTest;
 use PBald\SPgSp\Tests\Fixtures\MultiPolygonEntity;

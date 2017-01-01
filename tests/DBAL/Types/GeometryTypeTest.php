@@ -19,7 +19,6 @@
 
 namespace PBald\SPgSp\Tests\DBAL\Types;
 
-use GeoPHP\GeoPhp;
 use PBald\SPgSp\DBAL\Types\GeometryType;
 use PBald\SPgSp\Tests\DBAL\Types\AbstractGeometryTypeTest;
 use PBald\SPgSp\Tests\Fixtures\GeometryEntity;
@@ -31,6 +30,94 @@ use PBald\SPgSp\Tests\Fixtures\GeometryEntity;
  */
 class GeometryTypeTest extends AbstractGeometryTypeTest {
 
+    protected $geojsons = [
+        <<<EOF
+            { 
+                "type": "Point",
+                "crs":{"type":"name","properties":{"name":"EPSG:4326"}},
+                "coordinates": [100.0, 0.0] 
+            }
+EOF
+        ,
+        <<<EOF
+            { 
+                "type": "MultiPoint",
+                "crs":{"type":"name","properties":{"name":"EPSG:4326"}},
+                "coordinates": [ [100.0, 0.0], [101.0, 1.0] ]
+            }
+EOF
+        ,
+        <<<EOF
+            { 
+                "type": "LineString",
+                "crs":{"type":"name","properties":{"name":"EPSG:4326"}},
+                "coordinates": [ [100.0, 0.0], [101.0, 1.0] ]
+            }
+EOF
+        ,
+        <<<EOF
+            { 
+                "type": "MultiLineString",
+                "crs":{"type":"name","properties":{"name":"EPSG:4326"}},
+                "coordinates": [
+                    [ [100.0, 0.0], [101.0, 1.0] ],
+                    [ [102.0, 2.0], [103.0, 3.0] ]
+                ]
+            }
+EOF
+        ,
+        <<<EOF
+            { 
+                "type": "Polygon",
+                "crs":{"type":"name","properties":{"name":"EPSG:4326"}},
+                "coordinates": [
+                    [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]
+                ]
+            }
+EOF
+        ,
+        <<<EOF
+            { 
+                "type": "Polygon",
+                "crs":{"type":"name","properties":{"name":"EPSG:4326"}},
+                "coordinates": [
+                    [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ],
+                    [ [100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2] ]
+                ]
+            }
+EOF
+        ,
+        <<<EOF
+            { 
+                "type": "MultiPolygon",
+                "crs":{"type":"name","properties":{"name":"EPSG:4326"}},
+                "coordinates": [
+                    [[[102.0, 2.0], [103.0, 2.0], [103.0, 3.0], [102.0, 3.0], [102.0, 2.0]]],
+                    [[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]],
+                    [[100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2]]]
+                ]
+            }
+EOF
+        ,
+        <<<EOF
+            { 
+                "type": "GeometryCollection",
+                "geometries": [
+                    { 
+                        "type": "Point",
+                        "crs":{"type":"name","properties":{"name":"EPSG:4326"}},
+                        "coordinates": [100.0, 0.0]
+                    },
+                    { 
+                        "type": "LineString",
+                        "crs":{"type":"name","properties":{"name":"EPSG:4326"}},
+                        "coordinates": [ [101.0, 0.0], [102.0, 1.0] ]
+                    }
+                ]
+            }
+EOF
+    ];
+
     /**
      *  {@inheritDoc}
      */
@@ -38,15 +125,6 @@ class GeometryTypeTest extends AbstractGeometryTypeTest {
         $this->doctrineType = $this->dbtype = 'geometry';
         $this->geometryTypeClassName = GeometryType::class;
         $this->fixtureEntityClassName = GeometryEntity::class;
-        $this->wkts = array(
-            'POINT (1 3)',
-            'MULTIPOINT (3.5 5.6, 4.8 10.5)',
-            'LINESTRING (3 4, 10 50, 20 25)',
-            'MULTILINESTRING ((3 4, 10 50, 20 25), (-5 -8, -10 -8, -15 -4))',
-            'POLYGON ((1 1, 5 1, 5 5, 1 5, 1 1), (2 2, 3 2, 3 3, 2 3, 2 2))',
-            'MULTIPOLYGON (((1 1, 5 1, 5 5, 1 5, 1 1), (2 2, 3 2, 3 3, 2 3, 2 2)), ((3 3, 6 2, 6 4, 3 3)))',
-            'GEOMETRYCOLLECTION (MULTIPOINT (3.5 5.6, 4.8 10.5), POLYGON ((1 1, 5 1, 5 5, 1 5, 1 1), (2 2, 3 2, 3 3, 2 3, 2 2)))'
-        );
     }
 
     public function testGeomsPersistence() {

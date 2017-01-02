@@ -21,7 +21,6 @@ namespace PBald\SPgSp\Tests\Bridge;
 
 use PBald\SPgSp\Tests\OrmTestCase;
 use PBald\SPgSp\Brigde\PostgisBridge;
-//use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * Description of PostgisBridgeTest
@@ -37,8 +36,6 @@ class PostgisBridgeTest extends OrmTestCase {
      */
     protected function setUp() {
         $this->postgis = new PostgisBridge(self::$connection);
-        //self::bootKernel();
-        //$this->postgis = static::$kernel->getContainer()->get('app.postgis');
     }
 
     public function testStSrid() {
@@ -74,7 +71,7 @@ EOF;
         $this->postgis->ST_SetSRID($gj, 4326);
         $this->assertRegExp('/EPSG:4326/', $gj);
     }
-    
+
     public function testStMulti() {
         $gj = <<<EOF
             { 
@@ -85,4 +82,24 @@ EOF;
         $this->postgis->ST_Multi($gj);
         $this->assertRegExp('/MultiPoint/', $gj);
     }
+
+    public function testStMakeBox2D() {
+        $pll = <<<EOF
+            { 
+                "type": "Point",
+                "coordinates": [0.0 , 0.0] 
+            }
+EOF;
+        $pur = <<<EOF
+            { 
+                "type": "Point",
+                "coordinates": [1.0, 1.0] 
+            }
+EOF;
+        $box = $this->postgis->ST_MakeBox2D($pll, $pur);
+        $this->assertRegExp('/Polygon/', $box);
+        $box = $this->postgis->ST_MakeBox2D($pll, $pur, 4326);
+        $this->assertRegExp('/EPSG:4326/', $box);
+    }
+
 }

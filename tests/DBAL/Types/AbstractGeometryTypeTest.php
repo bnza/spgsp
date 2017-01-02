@@ -69,11 +69,14 @@ abstract class AbstractGeometryTypeTest extends OrmTestCase {
     protected $geojsons;
     
     /**
-     * Function set up set up $dbtype, $doctrineType, $geometryTypeClassName,
+     * Function set up $dbtype, $doctrineType, $geometryTypeClassName,
      * $fixtureEntityClassName and $geojsons.
      */
     abstract protected function setUpSpecificGeometry();
-
+    
+    /**
+     *  {@inheritDoc}
+     */
     protected function setUp() {
 
         $this->setUpSpecificGeometry();
@@ -115,7 +118,7 @@ abstract class AbstractGeometryTypeTest extends OrmTestCase {
     }
     
     /**
-     * Function return an array of geometry *Entity instances with correctly 
+     * Function returns an array of geometry *Entity instances with correctly 
      * filled geom property using the $this->geojsons array
      *  
      * @return array

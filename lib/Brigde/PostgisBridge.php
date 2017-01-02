@@ -35,19 +35,44 @@ class PostgisBridge {
     }
 
     /**
-     * @see http://postgis.net/docs/ST_SRID.html
+     * @see http://postgis.net/docs/ST_Multi.html
      * @staticvar Doctrine\DBAL\Statement $stmt
      * @param string $geom
-     * @return integer
      */
-    public function ST_SRID(string $geom) {
+    public function ST_MakeBox2D(string $pointLowLeft, string $pointUpRight, int $srid = 0) {
         static $stmt;
 
         if (is_null($stmt)) {
-            $stmt = $this->connection->prepare("SELECT ST_SRID(ST_GeomFromGeoJSON(:geom))");
+            $q = <<<EOL
+                    SELECT ST_AsGeoJSON(
+                        ST_SetSRID(
+                            ST_MakeBox2D(
+                                ST_GeomFromGeoJSON(:pll),
+                                ST_GeomFromGeoJSON(:pur)
+                            )
+                            , :srid)
+                        ,7,2
+                    )
+EOL;
+            $stmt = $this->connection->prepare($q);
+        }
+        $stmt->execute(['pll' => $pointLowLeft, 'pur' => $pointUpRight, 'srid' => $srid]);
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * @see http://postgis.net/docs/ST_Multi.html
+     * @staticvar Doctrine\DBAL\Statement $stmt
+     * @param string $geom
+     */
+    public function ST_Multi(string &$geom) {
+        static $stmt;
+
+        if (is_null($stmt)) {
+            $stmt = $this->connection->prepare("SELECT ST_AsGeoJSON(ST_Multi(ST_GeomFromGeoJSON(:geom)),7,2)");
         }
         $stmt->execute(['geom' => $geom]);
-        return $stmt->fetchColumn();
+        $geom = $stmt->fetchColumn();
     }
 
     /**
@@ -66,18 +91,19 @@ class PostgisBridge {
     }
 
     /**
-     * @see http://postgis.net/docs/ST_Multi.html
+     * @see http://postgis.net/docs/ST_SRID.html
      * @staticvar Doctrine\DBAL\Statement $stmt
      * @param string $geom
+     * @return integer
      */
-    public function ST_Multi(string &$geom) {
+    public function ST_SRID(string $geom) {
         static $stmt;
 
         if (is_null($stmt)) {
-            $stmt = $this->connection->prepare("SELECT ST_AsGeoJSON(ST_Multi(ST_GeomFromGeoJSON(:geom)),7,2)");
+            $stmt = $this->connection->prepare("SELECT ST_SRID(ST_GeomFromGeoJSON(:geom))");
         }
         $stmt->execute(['geom' => $geom]);
-        $geom = $stmt->fetchColumn();
+        return $stmt->fetchColumn();
     }
 
 }

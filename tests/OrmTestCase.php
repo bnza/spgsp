@@ -127,20 +127,8 @@ class OrmTestCase extends \PHPUnit_Framework_TestCase {
         return new SchemaTool($this->getEntityManager());
     }
 
-    protected function setUp() {
-        $this->setUpFunctions();
-    }
-
     public static function setUpBeforeClass() {
         static::createSpatialSchema();
-    }
-
-    /**
-     * Setup DQL functions
-     */
-    protected function setUpFunctions() {
-        $configuration = $this->getEntityManager()->getConfiguration();
-        $configuration->addCustomStringFunction('GeomFromText', 'PBald\SPgSp\ORM\Query\AST\Functions\GeomFromText');
     }
 
     /**

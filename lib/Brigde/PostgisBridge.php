@@ -19,8 +19,6 @@
 
 namespace PBald\SPgSp\Brigde;
 
-use PDO;
-use InvalidArgumentException;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -30,6 +28,11 @@ use Doctrine\DBAL\Connection;
  */
 class PostgisBridge {
 
+    /**
+     * @var Doctrine\DBAL\Connection 
+     */
+    private $connection;
+
     public function __construct(Connection $dbalConnection) {
         $this->connection = $dbalConnection;
     }
@@ -37,7 +40,9 @@ class PostgisBridge {
     /**
      * @see http://postgis.net/docs/ST_Multi.html
      * @staticvar Doctrine\DBAL\Statement $stmt
-     * @param string $geom
+     * @param string $pointLowLeft
+     * @param string $pointUpRight
+     * @param integer $srid
      */
     public function ST_MakeBox2D(string $pointLowLeft, string $pointUpRight, int $srid = 0) {
         static $stmt;
@@ -79,6 +84,7 @@ EOL;
      * @see http://postgis.net/docs/ST_SetSRID.html
      * @staticvar Doctrine\DBAL\Statement $stmt
      * @param string $geom
+     * @param integer $srid 
      */
     public function ST_SetSRID(string &$geom, int $srid) {
         static $stmt;
@@ -104,6 +110,28 @@ EOL;
         }
         $stmt->execute(['geom' => $geom]);
         return $stmt->fetchColumn();
+    }
+
+    /**
+     * @see http://postgis.net/docs/ST_Within.html
+     * @staticvar \Doctrine\DBAL\Statement $stmt
+     * @param string $geom
+     * @return bool
+     */
+    public function ST_Within(string $geomA, string $geomB) {
+        static $stmt;
+        if (is_null($stmt)) {
+            $stmt = $this->connection->prepare(
+                    <<<EOF
+                    SELECT ST_Within(
+                        ST_GeomFromGeoJSON(:geomA), 
+                        ST_GeomFromGeoJSON(:geomB)
+                    )
+EOF
+            );
+        }
+        $stmt->execute(['geomA' => $geomA, 'geomB' => $geomB]);
+        return (bool) $stmt->fetchColumn();
     }
 
 }

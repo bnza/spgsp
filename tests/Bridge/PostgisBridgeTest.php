@@ -102,4 +102,30 @@ EOF;
         $this->assertRegExp('/EPSG:4326/', $box);
     }
 
+    /**
+     * @group wop
+     */
+    public function testStWithin() {
+        $p1 = <<<EOF
+            { 
+                "type": "Point",
+                "coordinates": [0.5 , 0.5] 
+            }
+EOF;
+        $p2 = <<<EOF
+            { 
+                "type": "Point",
+                "coordinates": [1.0, 1.0] 
+            }
+EOF;
+        $poly = <<<EOF
+           {
+               "type":"Polygon",
+               "coordinates":[[[0,0],[0.5,0.5],[0,2],[2,2],[2,0],[0,0]]]
+           }
+EOF;
+        $this->assertFalse($this->postgis->ST_Within($p1, $poly));
+        $this->assertTrue($this->postgis->ST_Within($p2, $poly));
+    }
+
 }

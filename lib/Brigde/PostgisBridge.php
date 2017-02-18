@@ -22,33 +22,36 @@ namespace PBald\SPgSp\Brigde;
 use Doctrine\DBAL\Connection;
 
 /**
- * Description of PostgisBridge
+ * Description of PostgisBridge.
  *
  * @author Pietro Baldassarri <pietro.baldassarri@gmail.com>
  */
-class PostgisBridge {
-
+class PostgisBridge
+{
     /**
-     * @var Doctrine\DBAL\Connection 
+     * @var Doctrine\DBAL\Connection
      */
     private $connection;
 
-    public function __construct(Connection $dbalConnection) {
+    public function __construct(Connection $dbalConnection)
+    {
         $this->connection = $dbalConnection;
     }
 
     /**
      * @see http://postgis.net/docs/ST_Multi.html
      * @staticvar Doctrine\DBAL\Statement $stmt
+     *
      * @param string $pointLowLeft
      * @param string $pointUpRight
-     * @param integer $srid
+     * @param int    $srid
      */
-    public function ST_MakeBox2D(string $pointLowLeft, string $pointUpRight, int $srid = 0) {
+    public function ST_MakeBox2D(string $pointLowLeft, string $pointUpRight, int $srid = 0)
+    {
         static $stmt;
 
         if (is_null($stmt)) {
-            $q = <<<EOL
+            $q = <<<'EOL'
                     SELECT ST_AsGeoJSON(
                         ST_SetSRID(
                             ST_MakeBox2D(
@@ -62,19 +65,22 @@ EOL;
             $stmt = $this->connection->prepare($q);
         }
         $stmt->execute(['pll' => $pointLowLeft, 'pur' => $pointUpRight, 'srid' => $srid]);
+
         return $stmt->fetchColumn();
     }
 
     /**
      * @see http://postgis.net/docs/ST_Multi.html
      * @staticvar Doctrine\DBAL\Statement $stmt
+     *
      * @param string $geom
      */
-    public function ST_Multi(string &$geom) {
+    public function ST_Multi(string &$geom)
+    {
         static $stmt;
 
         if (is_null($stmt)) {
-            $stmt = $this->connection->prepare("SELECT ST_AsGeoJSON(ST_Multi(ST_GeomFromGeoJSON(:geom)),7,2)");
+            $stmt = $this->connection->prepare('SELECT ST_AsGeoJSON(ST_Multi(ST_GeomFromGeoJSON(:geom)),7,2)');
         }
         $stmt->execute(['geom' => $geom]);
         $geom = $stmt->fetchColumn();
@@ -83,14 +89,16 @@ EOL;
     /**
      * @see http://postgis.net/docs/ST_SetSRID.html
      * @staticvar Doctrine\DBAL\Statement $stmt
+     *
      * @param string $geom
-     * @param integer $srid 
+     * @param int    $srid
      */
-    public function ST_SetSRID(string &$geom, int $srid) {
+    public function ST_SetSRID(string &$geom, int $srid)
+    {
         static $stmt;
 
         if (is_null($stmt)) {
-            $stmt = $this->connection->prepare("SELECT ST_AsGeoJSON(ST_SetSRID(ST_GeomFromGeoJSON(:geom),:srid),7,2)");
+            $stmt = $this->connection->prepare('SELECT ST_AsGeoJSON(ST_SetSRID(ST_GeomFromGeoJSON(:geom),:srid),7,2)');
         }
         $stmt->execute(['geom' => $geom, 'srid' => $srid]);
         $geom = $stmt->fetchColumn();
@@ -99,30 +107,76 @@ EOL;
     /**
      * @see http://postgis.net/docs/ST_SRID.html
      * @staticvar Doctrine\DBAL\Statement $stmt
+     *
      * @param string $geom
-     * @return integer
+     *
+     * @return int
      */
-    public function ST_SRID(string $geom) {
+    public function ST_SRID(string $geom)
+    {
         static $stmt;
 
         if (is_null($stmt)) {
-            $stmt = $this->connection->prepare("SELECT ST_SRID(ST_GeomFromGeoJSON(:geom))");
+            $stmt = $this->connection->prepare('SELECT ST_SRID(ST_GeomFromGeoJSON(:geom))');
         }
         $stmt->execute(['geom' => $geom]);
+
         return $stmt->fetchColumn();
+    }
+
+    /**
+     * @see http://postgis.net/docs/ST_GeometryType.html
+     * @staticvar Doctrine\DBAL\Statement $stmt
+     *
+     * @param string $geom
+     *
+     * @return string
+     */
+    public function ST_GeometryType(string $geom)
+    {
+        static $stmt;
+
+        if (is_null($stmt)) {
+            $stmt = $this->connection->prepare('SELECT ST_GeometryType(ST_GeomFromGeoJSON(:geom))');
+        }
+        $stmt->execute(['geom' => $geom]);
+
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * @see http://postgis.net/docs/ST_Force2D.html
+     * @staticvar Doctrine\DBAL\Statement $stmt
+     *
+     * @param string $geom
+     *
+     * @return int
+     */
+    public function ST_Force2D(string &$geom)
+    {
+        static $stmt;
+
+        if (is_null($stmt)) {
+            $stmt = $this->connection->prepare('SELECT ST_AsGeoJSON(ST_Force2D(ST_GeomFromGeoJSON(:geom)),7,2)');
+        }
+        $stmt->execute(['geom' => $geom]);
+        $geom = $stmt->fetchColumn();
     }
 
     /**
      * @see http://postgis.net/docs/ST_Within.html
      * @staticvar \Doctrine\DBAL\Statement $stmt
+     *
      * @param string $geom
+     *
      * @return bool
      */
-    public function ST_Within(string $geomA, string $geomB) {
+    public function ST_Within(string $geomA, string $geomB)
+    {
         static $stmt;
         if (is_null($stmt)) {
             $stmt = $this->connection->prepare(
-                    <<<EOF
+                    <<<'EOF'
                     SELECT ST_Within(
                         ST_GeomFromGeoJSON(:geomA), 
                         ST_GeomFromGeoJSON(:geomB)
@@ -131,7 +185,30 @@ EOF
             );
         }
         $stmt->execute(['geomA' => $geomA, 'geomB' => $geomB]);
+
         return (bool) $stmt->fetchColumn();
     }
 
+    /**
+     * @see http://postgis.net/docs/ST_GeomFromKML.html
+     * @staticvar \Doctrine\DBAL\Statement $stmt
+     *
+     * @param string $geomkml
+     *
+     * @return bool
+     */
+    public function ST_GeomFromKML(string $geomkml)
+    {
+        static $stmt;
+        if (is_null($stmt)) {
+            $stmt = $this->connection->prepare(
+                    <<<'EOF'
+                    SELECT ST_AsGeoJSON(ST_GeomFromKML(:geomkml))
+EOF
+            );
+        }
+        $stmt->execute(['geomkml' => $geomkml]);
+
+        return $stmt->fetchColumn();
+    }
 }

@@ -11,20 +11,7 @@ Repository currently marked as dev. Set up your ```composer.json``` consequently
  "repositories": [
     {
                 "type": "vcs",
-                "url": "https://github.com/pbald/spgsp.git"
+                "url": "https://github.com/pbald/spgsp"
     }
-],
-```
-
-##Test Setup
-
-Testing against a real database requires creation of ```tests/connection_params.php``` containing following code modified accoding your need:
-
-```php
-<?php
-
-$GLOBALS['test_connection_params'] = array(
-    'username' => 'username',
-    'password' => 'password'
-);
+]
 ```

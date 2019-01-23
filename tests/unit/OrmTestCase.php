@@ -142,7 +142,7 @@ class OrmTestCase extends \PHPUnit\Framework\TestCase
         $this->em = null;
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         if (self::$connection) {
             self::$connection->close();

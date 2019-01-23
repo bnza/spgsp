@@ -34,7 +34,7 @@ SET row_security = off;
 CREATE DATABASE "test_spgsp_db" WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8';
 
 
-ALTER DATABASE "test_spgsp_db" OWNER TO "test_archiraq_admin";
+ALTER DATABASE "test_spgsp_db" OWNER TO "test_spgsp_user";
 
 \connect "test_spgsp_db"
 

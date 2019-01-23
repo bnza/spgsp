@@ -1,24 +1,31 @@
 {
-    "name": "pbald/spgsp",
-    "license": "GPL-3",
-    "type": "library",
+    "name": "bnza/spgsp",
+    "license": "GPL-3.0-or-later",
+    "type": "symfony-bundle",
     "description": "Doctrine2 simple support for spatial types and functions",
     "keywords": ["parser", "lexer", "string", "text", "geometry", "geography", "spatial", "geo", "coordinate"],
+    "authors": [
+        {
+            "name": "Pietro Baldassarri",
+            "email": "pietro.baldassarri@gmail.com"
+        }
+    ],
     "require": {
-        "php":            ">=5.3.3",
-        "ext-SPL":        "*"
+        "php":          ">=7.1",
+        "ext-json":     "*",
+        "doctrine/orm": ">=2.6"
     },
     "require-dev": {
-        "phpunit/phpunit":               ">=4.3"
+        "phpunit/phpunit":  ">=6"
     },
     "autoload": {
         "psr-4": {
-            "PBald\\SPgSp\\": "lib/"
+            "Bnza\\SPgSp\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "PBald\\SPgSp\\Tests\\": "tests/"
+            "Bnza\\SPgSp\\Tests\\": "tests/unit/"
         }
     }
 }

@@ -88,4 +88,12 @@ abstract class AbstractGeometryType extends Type {
         return strtoupper("geometry($geomDecl)");
     }
 
+    /**
+     *{@inheritDoc}
+     */
+    public function requiresSQLCommentHint(AbstractPlatform $platform) : bool
+    {
+        return true;
+    }
+
 }
